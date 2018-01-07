@@ -20,13 +20,12 @@ public class Global extends JPanel {
 
 	private Laby lab;
 
-	public Global (){
+	public Global() {
 
 		setBackground(Color.WHITE);
 		setSize(new Dimension(400, 500));
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS ));
-
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		head = new Header();
 		wrapper = new Body();
@@ -35,90 +34,86 @@ public class Global extends JPanel {
 		JSlider s = head.getSlider();
 		s.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				int val = ((JSlider)e.getSource()).getValue();
+				int val = ((JSlider) e.getSource()).getValue();
 				head.setText("" + val);
 				wrapper.changeColor(val);
 			}
 		});
 
-
 		JButton openBtn = head.getOpenButton();
-        openBtn.addActionListener(new ActionListener() {
+		openBtn.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-        	    FileDialog dialog = new FileDialog((Frame)null, "Open");
-        	    dialog.setMode(FileDialog.LOAD);
-        	    dialog.setVisible(true);
-        	    String file = dialog.getFile();
-        	    if (file == null){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				FileDialog dialog = new FileDialog((Frame) null, "Open");
+				dialog.setMode(FileDialog.LOAD);
+				dialog.setVisible(true);
+				String file = dialog.getFile();
+				if (file == null) {
 
-        	    	foo.setText("No file selected.");
-        	    	// TODO CLEAN SCENE
+					foo.setText("No file selected.");
+					// TODO CLEAN SCENE
 
-        	    } else {
+				} else {
 
-        	    	foo.setText(file);
+					foo.setText(file);
 
-        			try {
+					try {
 
-        				File f = new File(file);
-        				FileReader fileReader = new FileReader(f);
-        				BufferedReader bufferedReader = new BufferedReader(fileReader);
-        				String line;
+						File f = new File(file);
+						FileReader fileReader = new FileReader(f);
+						BufferedReader bufferedReader = new BufferedReader(fileReader);
+						String line;
 
-        				line = bufferedReader.readLine();
+						line = bufferedReader.readLine();
 
-        				if(line.equals("<! laby file />")){
+						if (line.equals("<! laby file />")) {
 
-            				line = bufferedReader.readLine();
+							line = bufferedReader.readLine();
 
-            				int width = 0;
-            				width = Integer.parseInt(line);
+							int width = 0;
+							width = Integer.parseInt(line);
 
-            				line = bufferedReader.readLine();
+							line = bufferedReader.readLine();
 
-            				int height = 0;
-            				height = Integer.parseInt(line);
+							int height = 0;
+							height = Integer.parseInt(line);
 
-            				if (width > 0 && height > 0){
+							if (width > 0 && height > 0) {
 
-                				StringBuffer stringBuffer = new StringBuffer();
+								StringBuffer stringBuffer = new StringBuffer();
 
-		        				while ((line = bufferedReader.readLine()) != null) {
-		        					stringBuffer.append(line);
-		        				}
+								while ((line = bufferedReader.readLine()) != null) {
+									stringBuffer.append(line);
+								}
 
-		        				fileReader.close();
+								fileReader.close();
 
-		        				String labStr = stringBuffer.toString();
+								String labStr = stringBuffer.toString();
 
+								lab = new Laby(labStr, width, height);
 
-		            	    	lab = new Laby(labStr, width, height);
+								wrapper.removeAll();
+								wrapper.revalidate();
+								wrapper.add(lab);
 
-		            	    	wrapper.removeAll();
-		            	    	wrapper.revalidate();
-		            	    	wrapper.add(lab);
+								// TODO DISPLAY LABY
 
-		            	    	// TODO DISPLAY LABY
+							} else {
+								fileReader.close();
+							}
 
-            				} else {
-		        				fileReader.close();
-            				}
+						} else {
+							fileReader.close();
+						}
 
-        				} else {
-	        				fileReader.close();
-        				}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 
-        			} catch (IOException e) {
-        				e.printStackTrace();
-        			}
-
-
-        	    }
-            }
-        });
-
+				}
+			}
+		});
 
 		add(head);
 		add(wrapper);

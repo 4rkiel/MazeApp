@@ -1,9 +1,5 @@
 import java.awt.*;
-import java.awt.event.*;
-
 import javax.swing.*;
-import javax.swing.filechooser.*;
-import java.io.File;
 
 public class Header extends JPanel {
 
@@ -19,26 +15,23 @@ public class Header extends JPanel {
 	private JLabel headerLabel3;
 	private JButton openBtn;
 
-	public Header (){
+	public Header() {
 
 		setBackground(Color.GRAY);
 		setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-	    setPreferredSize(new Dimension(400, 100));
+		setPreferredSize(new Dimension(400, 100));
 
 		setLayout(new GridBagLayout());
-	    GridBagConstraints gbc = new GridBagConstraints();
+		GridBagConstraints gbc = new GridBagConstraints();
 
+		// Left header
 
-	    // Left header
+		left = new JPanel();
+		left.setBackground(Color.GRAY);
+		left.setLayout(new BoxLayout(left, BoxLayout.X_AXIS));
 
-	    left = new JPanel();
-	    left.setBackground(Color.GRAY);
-	    left.setLayout(new BoxLayout(left, BoxLayout.X_AXIS));
-
-	    left.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-	    left.setPreferredSize(new Dimension(200, 100));
-
-
+		left.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+		left.setPreferredSize(new Dimension(200, 100));
 
 		headerLabel1 = new JLabel("", JLabel.CENTER);
 		headerLabel1.setMaximumSize(new Dimension(40, 100));
@@ -49,21 +42,19 @@ public class Header extends JPanel {
 		left.add(headerLabel1);
 		left.add(Box.createHorizontalStrut(10));
 
+		slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 10);
+		slider.setMinorTickSpacing(10);
+		slider.setMajorTickSpacing(10);
+		slider.setPaintTicks(true);
+		slider.setSnapToTicks(true);
 
-	    slider = new JSlider(JSlider.HORIZONTAL,10,100,10);
-	    slider.setMinorTickSpacing(10);
-	    slider.setMajorTickSpacing(10);
-	    slider.setPaintTicks(true);
-	    slider.setSnapToTicks(true);
+		slider.setMinimumSize(new Dimension(100, 100));
+		slider.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+		slider.setPreferredSize(new Dimension(100, 100));
+		slider.setBackground(Color.GRAY);
 
-	    slider.setMinimumSize(new Dimension(100, 100));
-	    slider.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-	    slider.setPreferredSize(new Dimension(100, 100));
-	    slider.setBackground(Color.GRAY);
-
-	    left.add(slider);
+		left.add(slider);
 		left.add(Box.createHorizontalStrut(10));
-
 
 		headerLabel2 = new JLabel("", JLabel.CENTER);
 		headerLabel2.setMaximumSize(new Dimension(40, 100));
@@ -74,20 +65,16 @@ public class Header extends JPanel {
 
 		left.add(headerLabel2);
 
-
-
 		// Right panel
 
+		right = new JPanel();
+		right.setLayout(new BoxLayout(right, BoxLayout.X_AXIS));
+		right.setBackground(Color.GRAY);
 
-	    right = new JPanel();
-	    right.setLayout(new BoxLayout(right, BoxLayout.X_AXIS));
-	    right.setBackground(Color.GRAY);
+		right.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+		right.setPreferredSize(new Dimension(200, 100));
 
-	    right.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-	    right.setPreferredSize(new Dimension(200, 100));
-
-
-	    headerLabel3 = new JLabel("", JLabel.CENTER);
+		headerLabel3 = new JLabel("", JLabel.CENTER);
 		headerLabel3.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 		headerLabel3.setPreferredSize(new Dimension(40, 100));
 
@@ -97,36 +84,32 @@ public class Header extends JPanel {
 		right.add(headerLabel3);
 		right.add(Box.createHorizontalStrut(10));
 
+		openBtn = new JButton("Open");
 
-        openBtn = new JButton("Open");
-
-	    right.add(openBtn);
+		right.add(openBtn);
 		right.add(Box.createHorizontalStrut(10));
 
-
-
-	    gbc.fill = GridBagConstraints.HORIZONTAL;
-	    gbc.gridx = 0;
-	    gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
 		add(left, gbc);
 
-
-	    gbc.fill = GridBagConstraints.HORIZONTAL;
-	    gbc.gridx = 1;
-	    gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 1;
+		gbc.gridy = 0;
 		gbc.weighty = 1.0;
 		add(right, gbc);
 	}
 
-	public JSlider getSlider (){
+	public JSlider getSlider() {
 		return slider;
 	}
 
-	public void setText (String str){
+	public void setText(String str) {
 		headerLabel2.setText(str);
 	}
 
-	public JButton getOpenButton (){
+	public JButton getOpenButton() {
 		return openBtn;
 	}
 

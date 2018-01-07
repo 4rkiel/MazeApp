@@ -7,12 +7,12 @@ public class App extends JFrame {
 
 	private Global g;
 
-	public App (){
+	public App() {
 
 		String path = System.getProperty("user.dir");
 
 		Toolkit kit = Toolkit.getDefaultToolkit();
-		Image img = kit.createImage(path+"/lab.png");
+		Image img = kit.createImage(path + "/lab.png");
 		setIconImage(img);
 
 		setTitle("Hello");
