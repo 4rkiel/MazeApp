@@ -28,4 +28,8 @@ public class Body extends JPanel {
 
 		setBackground(c);
 	}
+
+	void doBest(){
+
+	}
 }

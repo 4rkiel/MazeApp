@@ -20,6 +20,10 @@ public class Global extends JPanel {
 
 	private Laby lab;
 
+	private int load = 0;
+	private int opti = 0;
+	private int path = 0;
+
 	public Global() {
 
 		setBackground(Color.WHITE);
@@ -35,7 +39,6 @@ public class Global extends JPanel {
 		s.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int val = ((JSlider) e.getSource()).getValue();
-				head.setText("" + val);
 				wrapper.changeColor(val);
 			}
 		});
@@ -52,11 +55,13 @@ public class Global extends JPanel {
 				if (file == null) {
 
 					foo.setText("No file selected.");
-					// TODO CLEAN SCENE
+					load = 0;
+					wrapper.removeAll();
+					wrapper.revalidate();
+					repaint();
+
 
 				} else {
-
-					foo.setText(file);
 
 					try {
 
@@ -93,18 +98,31 @@ public class Global extends JPanel {
 
 								lab = new Laby(labStr, width, height);
 
+								foo.setText(file);
+								load = 1;
+
 								wrapper.removeAll();
 								wrapper.revalidate();
 								wrapper.add(lab);
 
-								// TODO DISPLAY LABY
-
 							} else {
+								foo.setText("No file selected.");
 								fileReader.close();
+								load = 0;
+								wrapper.removeAll();
+								wrapper.revalidate();
+								repaint();
+
 							}
 
 						} else {
+							foo.setText("No file selected.");
 							fileReader.close();
+							load = 0;
+							wrapper.removeAll();
+							wrapper.revalidate();
+							repaint();
+
 						}
 
 					} catch (IOException e) {
@@ -114,6 +132,65 @@ public class Global extends JPanel {
 				}
 			}
 		});
+
+		JButton pathBtn = head.getPathButton();
+		pathBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				if (load == 1){
+					if (path == 0){
+
+						if (opti == 1){
+							lab.restore();
+							opti = 0;
+						}
+
+						lab.resolve();
+						path = 1;
+
+					} else {
+
+						lab.restore();
+						opti = 0;
+						path = 0;
+					}
+
+					repaint();
+				}
+			}
+		});
+
+		JButton bestBtn = head.getBestButton();
+		bestBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				if(load == 1){
+					if (opti == 0){
+
+						if (path == 1){
+							lab.restore();
+							path = 0;
+						}
+
+						lab.resolveBest();
+						opti = 1;
+
+					} else {
+
+						lab.restore();
+						opti = 0;
+						path = 0;
+					}
+
+					repaint();
+				}
+			}
+		});
+
 
 		add(head);
 		add(wrapper);

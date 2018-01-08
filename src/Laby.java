@@ -8,6 +8,7 @@ public class Laby extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	private String stockStr = "";
 	private String labStr = "";
 	private String tmpStr = "";
 
@@ -47,13 +48,25 @@ public class Laby extends JPanel {
 		sizeX = (int) 200 / width;
 		sizeY = (int) 200 / height;
 
-		// TODO GET FRAME SIZE
-
-		// setBackground(Color.LIGHT_GRAY);
 		setMaximumSize(new Dimension(202, 202));
 		setPreferredSize(new Dimension(202, 202));
 
-		if (resolveBest() && best > -1) {
+		stockStr = labStr;
+
+	}
+
+	public void resolve() {
+
+		if (start == -1 && end == -1) {
+			return;
+		}
+
+		found = false;
+		tmpStr = labStr;
+
+		boolean res = resolveAux(start);
+
+		if (res) {
 
 			if (start < end) {
 				labStr = tmpStr.substring(0, start) + 'S' + tmpStr.substring(start + 1, end) + 'T'
@@ -63,19 +76,6 @@ public class Laby extends JPanel {
 						+ tmpStr.substring(start + 1);
 			}
 		}
-
-	}
-
-	public boolean resolve() {
-
-		if (start == -1 && end == -1) {
-			return false;
-		}
-
-		found = false;
-		tmpStr = labStr;
-
-		return resolveAux(start);
 	}
 
 	public boolean resolveAux(int k) {
@@ -127,16 +127,27 @@ public class Laby extends JPanel {
 	 *
 	 */
 
-	public boolean resolveBest() {
+	public void resolveBest() {
 
 		if (start == -1 && end == -1) {
-			return false;
+			return;
 		}
 
 		best = -1;
 		tmpStr = labStr;
 
-		return resolveBestAux(start, 0) && traceBest();
+		boolean res = resolveBestAux(start, 0) && traceBest();
+
+		if (res && best > -1) {
+
+			if (start < end) {
+				labStr = tmpStr.substring(0, start) + 'S' + tmpStr.substring(start + 1, end) + 'T'
+						+ tmpStr.substring(end + 1);
+			} else {
+				labStr = tmpStr.substring(0, end) + 'T' + tmpStr.substring(end + 1, start) + 'S'
+						+ tmpStr.substring(start + 1);
+			}
+		}
 	}
 
 	public boolean resolveBestAux(int k, int m) {
@@ -266,6 +277,12 @@ public class Laby extends JPanel {
 	public int my(int k) {
 		return k - width;
 	}
+
+
+	public void restore(){
+		labStr = stockStr;
+	}
+
 
 	@Override
 	public void paintComponent(Graphics g) {
